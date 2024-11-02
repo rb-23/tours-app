@@ -23,6 +23,14 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
+      validate: {
+        message:
+          // ALWAYS INCORRECTLY TRIGGERS IN UPDATE METHOD, only points to current doc on NEW document creation
+          'Discount price ({VALUE}) should not be higher than normal price',
+        validator: function (val) {
+          return val < this.price;
+        },
+      },
     },
     summary: {
       type: String,
